@@ -1,9 +1,11 @@
 ---
-// Component Imports
-import Counter from '../components/Counter';
-const someProps = {
-	count: 0,
-};
+
+import { getEntry, getEntries, getCollection } from 'astro:content';
+import { HelloWorld } from '../components/HelloWorl';
+// Get all entries from a collection.
+// Requires the name of the collection as an argument.
+// Example: retrieve `src/content/blog/**`
+const posts = await getCollection('posts');
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
@@ -28,9 +30,14 @@ const someProps = {
 	</head>
 	<body>
 		<main>
-			<Counter {...someProps} client:visible>
-				<h1>Hello, React!</h1>
-			</Counter>
+			<HelloWorld />
+			
+			{posts.map(post => (
+					<div>
+						<a href={`posts/${post.slug}`}>{post.data.title}</a>
+					</div>
+				))
+			}
 		</main>
 	</body>
 </html>
